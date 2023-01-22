@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: product-service
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/product_service
+    username: root
+    password: Ratnesh2810
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+server:
+  port: 0
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:password@localhost:8761/eureka

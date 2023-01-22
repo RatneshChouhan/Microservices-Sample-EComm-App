@@ -1,0 +1,42 @@
+server:
+  port: 8080
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:password@localhost:8761/eureka
+
+logging:
+  level:
+      root: INFO
+      org.springframework.cloud.gateway: TRACE
+      org.springframework.cloud.gateway.route.RouteDefinitionLocator: INFO
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+      - id: product-service
+        uri: lb://product-service
+        predicates:
+          - Path= /api/products
+      - id: order-service
+        uri: lb://order-service
+        predicates:
+          - Path= /api/order
+      - id: discovery-server
+        uri: http://localhost:8761
+        predicates:
+          - Path= /eureka/web
+        filters:
+          - SetPath=/
+      - id: discovery-server-static
+        uri: http://localhost:8761
+        predicates:
+          - Path=/eureka/**
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/microservices-realm
